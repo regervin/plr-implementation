@@ -1,40 +1,87 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 function TaskList() {
-  const [tasks, setTasks] = useState({
-    '1.1': false,
-    '1.2': false,
-    '1.3': false,
-    '2.1': false,
-    '2.2': false,
-    '2.3': false,
-    '2.4': false,
-    '3.1': false,
-    '4.1': false,
-    '5.1': false,
-    '5.2': false,
-    '5.3': false,
-    '6.1': false,
-    '6.2': false,
-    '7.1': false,
-    '7.2': false,
-    '8.1': false,
-    '8.2': false,
-    '8.3': false,
-    '9.1': false,
-    '9.2': false,
-    '9.3': false
-  })
+  const [tasks, setTasks] = useState(() => {
+    // Initialize from localStorage or use default values
+    const savedTasks = localStorage.getItem('plrTaskProgress');
+    if (savedTasks) {
+      return JSON.parse(savedTasks);
+    }
+    
+    // Default task state if nothing in localStorage
+    return {
+      '1.1': false,
+      '1.2': false,
+      '1.3': false,
+      '2.1': false,
+      '2.2': false,
+      '2.3': false,
+      '2.4': false,
+      '3.1': false,
+      '4.1': false,
+      '5.1': false,
+      '5.2': false,
+      '5.3': false,
+      '6.1': false,
+      '6.2': false,
+      '7.1': false,
+      '7.2': false,
+      '8.1': false,
+      '8.2': false,
+      '8.3': false,
+      '9.1': false,
+      '9.2': false,
+      '9.3': false
+    };
+  });
+
+  // Save to localStorage whenever tasks change
+  useEffect(() => {
+    localStorage.setItem('plrTaskProgress', JSON.stringify(tasks));
+  }, [tasks]);
 
   const handleTaskChange = (taskId) => {
     setTasks(prevTasks => ({
       ...prevTasks,
       [taskId]: !prevTasks[taskId]
-    }))
+    }));
   }
+
+  // Calculate progress
+  const totalTasks = Object.keys(tasks).length;
+  const completedTasks = Object.values(tasks).filter(Boolean).length;
+  const progressPercentage = Math.round((completedTasks / totalTasks) * 100);
+
+  // Reset progress function
+  const resetProgress = () => {
+    if (window.confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+      const resetTasks = Object.keys(tasks).reduce((acc, key) => {
+        acc[key] = false;
+        return acc;
+      }, {});
+      
+      setTasks(resetTasks);
+    }
+  };
 
   return (
     <div className="implementation-plan">
+      <div className="progress-container">
+        <div className="progress-header">
+          <h2>Implementation Progress</h2>
+          <button className="reset-button" onClick={resetProgress}>Reset Progress</button>
+        </div>
+        <div className="progress-bar-container">
+          <div 
+            className="progress-bar" 
+            style={{ width: `${progressPercentage}%` }}
+          ></div>
+        </div>
+        <div className="progress-stats">
+          <span>{completedTasks} of {totalTasks} tasks completed ({progressPercentage}%)</span>
+        </div>
+      </div>
+
       <div className="phase">
         <h2>Phase 1: Foundational Setup - Lead Magnet & List Building</h2>
         <p className="objective">Objective: Prepare and launch your lead magnet to start building your email list.</p>
