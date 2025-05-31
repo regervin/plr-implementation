@@ -1,31 +1,31 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import { ToastContainer } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-
-// Layouts
-import MainLayout from './layouts/MainLayout'
-
-// Pages
-import Dashboard from './pages/Dashboard'
-import TaskList from './pages/TaskList'
-import TaskDetail from './pages/TaskDetail'
-import ProjectSettings from './pages/ProjectSettings'
-import NotFound from './pages/NotFound'
+import { useState } from 'react'
+import './App.css'
+import TaskList from './components/TaskList'
 
 function App() {
   return (
-    <Router>
-      <ToastContainer position="bottom-right" />
-      <Routes>
-        <Route path="/" element={<MainLayout />}>
-          <Route index element={<Dashboard />} />
-          <Route path="tasks" element={<TaskList />} />
-          <Route path="task/:taskId" element={<TaskDetail />} />
-          <Route path="settings" element={<ProjectSettings />} />
-          <Route path="*" element={<NotFound />} />
-        </Route>
-      </Routes>
-    </Router>
+    <div className="app">
+      <h1>PLR Package Implementation Action Plan</h1>
+      
+      <div className="card">
+        <div className="welcome">
+          <h2>Welcome!</h2>
+          <p>Track your progress through the implementation plan below.</p>
+        </div>
+      </div>
+
+      <TaskList />
+      
+      <div className="footer">
+        <h3>Important Reminders</h3>
+        <ul>
+          <li><strong>FTC Compliance:</strong> When promoting anything with affiliate links, ensure you disclose your affiliate relationship clearly and conspicuously, as per FTC guidelines.</li>
+          <li><strong>Consistency is Key:</strong> Follow the schedule as closely as possible.</li>
+          <li><strong>Engagement:</strong> Monitor comments and engage with your audience on social media and your blog.</li>
+          <li><strong>Review and Adjust:</strong> Periodically review what's working and adjust your strategy as needed.</li>
+        </ul>
+      </div>
+    </div>
   )
 }
 

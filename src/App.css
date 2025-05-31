@@ -1,0 +1,153 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.card {
+  padding: 2em;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  width: 100%;
+  max-width: 800px;
+}
+
+.welcome {
+  margin-bottom: 1.5rem;
+}
+
+.implementation-plan {
+  width: 100%;
+  max-width: 800px;
+  text-align: left;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+  padding: 2em;
+}
+
+.phase {
+  margin-bottom: 3rem;
+}
+
+.phase h2 {
+  color: #2a6496;
+  margin-bottom: 0.5rem;
+}
+
+.objective {
+  font-style: italic;
+  margin-bottom: 2rem;
+  color: #555;
+}
+
+.section {
+  margin-bottom: 2rem;
+}
+
+.section h3 {
+  color: #333;
+  margin-bottom: 1rem;
+}
+
+.task {
+  margin-bottom: 1.5rem;
+  padding-left: 1rem;
+}
+
+.task-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.task-header input[type="checkbox"] {
+  margin-right: 0.5rem;
+  width: 18px;
+  height: 18px;
+}
+
+.task-header label {
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.task-description {
+  margin-left: 1.5rem;
+  margin-bottom: 0.5rem;
+  font-style: italic;
+}
+
+.subtasks {
+  margin-left: 2rem;
+  list-style-type: disc;
+}
+
+.subtasks li {
+  margin-bottom: 0.5rem;
+}
+
+.footer {
+  width: 100%;
+  max-width: 800px;
+  text-align: left;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  padding: 1.5em;
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+}
+
+.footer h3 {
+  color: #2a6496;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.footer ul {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+.footer li {
+  margin-bottom: 0.75rem;
+  padding-left: 1.5rem;
+  position: relative;
+}
+
+.footer li:before {
+  content: "•";
+  position: absolute;
+  left: 0;
+  color: #2a6496;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .implementation-plan {
+    padding: 1em;
+  }
+  
+  .task {
+    padding-left: 0.5rem;
+  }
+  
+  .subtasks {
+    margin-left: 1rem;
+  }
+  
+  .footer {
+    padding: 1em;
+  }
+  
+  .footer li {
+    padding-left: 1.2rem;
+  }
+}
