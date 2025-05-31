@@ -1,0 +1,180 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  font-family: 'Inter', sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background-color: #f9fafb;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Poppins', sans-serif;
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-lg shadow-sm p-6;
+  }
+  
+  .btn {
+    @apply px-4 py-2 rounded-md font-medium transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+  
+  .btn-primary {
+    @apply bg-blue-600 text-white hover:bg-blue-700 focus:ring-blue-500;
+  }
+  
+  .btn-outline {
+    @apply border border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-blue-500;
+  }
+  
+  .btn-danger {
+    @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
+  }
+  
+  .input {
+    @apply block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500;
+  }
+  
+  .checkbox {
+    @apply h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded;
+  }
+  
+  .sidebar-link {
+    @apply flex items-center px-3 py-2 text-sm font-medium rounded-md text-gray-700 hover:bg-gray-100 hover:text-blue-600;
+  }
+  
+  .sidebar-link svg {
+    @apply mr-3 h-5 w-5 text-gray-500;
+  }
+  
+  .sidebar-link.active {
+    @apply bg-blue-50 text-blue-700;
+  }
+  
+  .sidebar-link.active svg {
+    @apply text-blue-600;
+  }
+  
+  .progress-bar {
+    @apply w-full h-2 bg-gray-200 rounded-full overflow-hidden;
+  }
+  
+  .progress-bar-fill {
+    @apply h-full rounded-full;
+  }
+  
+  .progress-bar-fill.low {
+    @apply bg-red-500;
+  }
+  
+  .progress-bar-fill.medium {
+    @apply bg-yellow-500;
+  }
+  
+  .progress-bar-fill.high {
+    @apply bg-green-500;
+  }
+  
+  .phase-card {
+    @apply p-4 rounded-lg border border-gray-200 transition-all duration-200 hover:border-blue-300 hover:shadow-sm cursor-pointer;
+  }
+  
+  .phase-1 {
+    @apply bg-blue-50;
+  }
+  
+  .phase-2 {
+    @apply bg-purple-50;
+  }
+  
+  .phase-3 {
+    @apply bg-green-50;
+  }
+  
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+  
+  .bg-primary-50 {
+    @apply bg-blue-50;
+  }
+  
+  .bg-primary-100 {
+    @apply bg-blue-100;
+  }
+  
+  .bg-primary-500 {
+    @apply bg-blue-500;
+  }
+  
+  .bg-primary-600 {
+    @apply bg-blue-600;
+  }
+  
+  .text-primary-600 {
+    @apply text-blue-600;
+  }
+  
+  .text-primary-700 {
+    @apply text-blue-700;
+  }
+  
+  .text-primary-800 {
+    @apply text-blue-800;
+  }
+  
+  .bg-success-100 {
+    @apply bg-green-100;
+  }
+  
+  .text-success-800 {
+    @apply text-green-800;
+  }
+  
+  .bg-warning-100 {
+    @apply bg-yellow-100;
+  }
+  
+  .text-warning-800 {
+    @apply text-yellow-800;
+  }
+  
+  .bg-danger-50 {
+    @apply bg-red-50;
+  }
+  
+  .bg-danger-100 {
+    @apply bg-red-100;
+  }
+  
+  .bg-danger-200 {
+    @apply bg-red-200;
+  }
+  
+  .bg-danger-500 {
+    @apply bg-red-500;
+  }
+  
+  .bg-danger-600 {
+    @apply bg-red-600;
+  }
+  
+  .text-danger-600 {
+    @apply text-red-600;
+  }
+  
+  .text-danger-800 {
+    @apply text-red-800;
+  }
+}
