@@ -1,504 +1,418 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react';
 
-function TaskList() {
-  const [tasks, setTasks] = useState(() => {
-    // Initialize from localStorage or use default values
-    const savedTasks = localStorage.getItem('plrTaskProgress');
-    if (savedTasks) {
-      return JSON.parse(savedTasks);
-    }
-    
-    // Default task state if nothing in localStorage
-    return {
-      '1.1': false,
-      '1.2': false,
-      '1.3': false,
-      '2.1': false,
-      '2.2': false,
-      '2.3': false,
-      '2.4': false,
-      '3.1': false,
-      '4.1': false,
-      '5.1': false,
-      '5.2': false,
-      '5.3': false,
-      '6.1': false,
-      '6.2': false,
-      '7.1': false,
-      '7.2': false,
-      '8.1': false,
-      '8.2': false,
-      '8.3': false,
-      '9.1': false,
-      '9.2': false,
-      '9.3': false
-    };
-  });
+const TaskList = ({ plrName }) => {
+  const [tasks, setTasks] = useState([]);
+  const [filter, setFilter] = useState('all');
+  const [expandedPhase, setExpandedPhase] = useState(1);
 
-  // Save to localStorage whenever tasks change
   useEffect(() => {
-    localStorage.setItem('plrTaskProgress', JSON.stringify(tasks));
-  }, [tasks]);
+    const initialTasks = [
+      // Phase 1: Planning & Analysis
+      {
+        id: 1,
+        title: "Review PLR License & Content",
+        description: "Thoroughly examine license terms and inventory all included materials",
+        category: "Legal",
+        priority: "high",
+        phase: 1,
+        completed: false,
+        estimatedTime: "45 min",
+        tips: "Create a checklist of what you can and cannot do with the content"
+      },
+      {
+        id: 2,
+        title: "Market Research & Competitor Analysis",
+        description: "Research your target market and analyze competing products",
+        category: "Research",
+        priority: "high",
+        phase: 1,
+        completed: false,
+        estimatedTime: "2 hours",
+        tips: "Use tools like Google Trends, Amazon bestsellers, and social media groups"
+      },
+      {
+        id: 3,
+        title: "Define Your Unique Value Proposition",
+        description: "Identify what makes your version different and valuable",
+        category: "Strategy",
+        priority: "high",
+        phase: 1,
+        completed: false,
+        estimatedTime: "1 hour",
+        tips: "Focus on your personal experience and unique insights"
+      },
+      {
+        id: 4,
+        title: "Create Content Strategy & Calendar",
+        description: "Plan how you'll use and distribute the PLR content",
+        category: "Planning",
+        priority: "medium",
+        phase: 1,
+        completed: false,
+        estimatedTime: "1.5 hours",
+        tips: "Consider multiple formats: ebook, course, blog series, social posts"
+      },
 
-  const handleTaskChange = (taskId) => {
-    setTasks(prevTasks => ({
-      ...prevTasks,
-      [taskId]: !prevTasks[taskId]
-    }));
-  }
+      // Phase 2: Customization & Branding
+      {
+        id: 5,
+        title: "Rebrand All Visual Elements",
+        description: "Replace generic branding with your logo, colors, and style",
+        category: "Design",
+        priority: "high",
+        phase: 2,
+        completed: false,
+        estimatedTime: "3 hours",
+        tips: "Use Canva or similar tools for professional-looking designs"
+      },
+      {
+        id: 6,
+        title: "Rewrite & Personalize Content",
+        description: "Add your voice, examples, and unique insights to the content",
+        category: "Content",
+        priority: "high",
+        phase: 2,
+        completed: false,
+        estimatedTime: "5 hours",
+        tips: "Aim for 30-50% original content to make it truly yours"
+      },
+      {
+        id: 7,
+        title: "Create Lead Magnets & Bonuses",
+        description: "Develop free resources to capture leads and add value",
+        category: "Marketing",
+        priority: "high",
+        phase: 2,
+        completed: false,
+        estimatedTime: "2 hours",
+        tips: "Checklists, templates, and quick-start guides work well"
+      },
+      {
+        id: 8,
+        title: "Build Sales Pages & Funnels",
+        description: "Create compelling landing pages and sales sequences",
+        category: "Marketing",
+        priority: "high",
+        phase: 2,
+        completed: false,
+        estimatedTime: "4 hours",
+        tips: "Focus on benefits, not features. Include testimonials and guarantees"
+      },
+      {
+        id: 9,
+        title: "Set Up Payment & Delivery Systems",
+        description: "Configure payment processing and automated delivery",
+        category: "Technical",
+        priority: "high",
+        phase: 2,
+        completed: false,
+        estimatedTime: "2 hours",
+        tips: "Test the entire customer journey before launch"
+      },
 
-  // Calculate progress
-  const totalTasks = Object.keys(tasks).length;
-  const completedTasks = Object.values(tasks).filter(Boolean).length;
-  const progressPercentage = Math.round((completedTasks / totalTasks) * 100);
+      // Phase 3: Launch & Marketing
+      {
+        id: 10,
+        title: "Build Email Marketing Sequences",
+        description: "Create nurture sequences and promotional campaigns",
+        category: "Marketing",
+        priority: "high",
+        phase: 3,
+        completed: false,
+        estimatedTime: "3 hours",
+        tips: "Include value-first emails, not just promotional content"
+      },
+      {
+        id: 11,
+        title: "Create Social Media Content",
+        description: "Develop posts, stories, and videos for social platforms",
+        category: "Marketing",
+        priority: "medium",
+        phase: 3,
+        completed: false,
+        estimatedTime: "2 hours",
+        tips: "Repurpose content across multiple platforms with platform-specific tweaks"
+      },
+      {
+        id: 12,
+        title: "Launch Beta Test Campaign",
+        description: "Soft launch to a small audience for feedback and optimization",
+        category: "Testing",
+        priority: "high",
+        phase: 3,
+        completed: false,
+        estimatedTime: "1 week",
+        tips: "Offer beta pricing in exchange for detailed feedback"
+      },
+      {
+        id: 13,
+        title: "Execute Full Launch Campaign",
+        description: "Roll out complete marketing campaign across all channels",
+        category: "Marketing",
+        priority: "high",
+        phase: 3,
+        completed: false,
+        estimatedTime: "2 weeks",
+        tips: "Create urgency with limited-time bonuses or pricing"
+      },
+      {
+        id: 14,
+        title: "Monitor, Analyze & Optimize",
+        description: "Track performance metrics and continuously improve",
+        category: "Analytics",
+        priority: "medium",
+        phase: 3,
+        completed: false,
+        estimatedTime: "Ongoing",
+        tips: "Focus on conversion rates, customer feedback, and revenue per visitor"
+      }
+    ];
 
-  // Reset progress function
-  const resetProgress = () => {
-    if (window.confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
-      const resetTasks = Object.keys(tasks).reduce((acc, key) => {
-        acc[key] = false;
-        return acc;
-      }, {});
-      
-      setTasks(resetTasks);
+    const savedTasks = localStorage.getItem('plrTasks');
+    if (savedTasks) {
+      setTasks(JSON.parse(savedTasks));
+    } else {
+      setTasks(initialTasks);
+      localStorage.setItem('plrTasks', JSON.stringify(initialTasks));
+    }
+  }, []);
+
+  const toggleTask = (id) => {
+    const updatedTasks = tasks.map(task =>
+      task.id === id ? { ...task, completed: !task.completed } : task
+    );
+    setTasks(updatedTasks);
+    localStorage.setItem('plrTasks', JSON.stringify(updatedTasks));
+  };
+
+  const getPhaseInfo = (phase) => {
+    const phaseData = {
+      1: {
+        title: "Planning & Analysis",
+        description: "Research, strategy, and foundation setting",
+        icon: "🎯",
+        color: "blue"
+      },
+      2: {
+        title: "Customization & Branding", 
+        description: "Transform PLR into your unique product",
+        icon: "🎨",
+        color: "purple"
+      },
+      3: {
+        title: "Launch & Marketing",
+        description: "Bring your product to market successfully",
+        icon: "🚀",
+        color: "green"
+      }
+    };
+    return phaseData[phase] || phaseData[1];
+  };
+
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case 'high': return 'bg-red-100 text-red-800 border-red-200';
+      case 'medium': return 'bg-yellow-100 text-yellow-800 border-yellow-200';
+      case 'low': return 'bg-green-100 text-green-800 border-green-200';
+      default: return 'bg-gray-100 text-gray-800 border-gray-200';
     }
   };
 
+  const getCategoryColor = (category) => {
+    const colors = {
+      'Legal': 'bg-purple-100 text-purple-800',
+      'Research': 'bg-blue-100 text-blue-800',
+      'Strategy': 'bg-indigo-100 text-indigo-800',
+      'Planning': 'bg-cyan-100 text-cyan-800',
+      'Design': 'bg-pink-100 text-pink-800',
+      'Content': 'bg-green-100 text-green-800',
+      'Marketing': 'bg-orange-100 text-orange-800',
+      'Technical': 'bg-gray-100 text-gray-800',
+      'Testing': 'bg-yellow-100 text-yellow-800',
+      'Analytics': 'bg-teal-100 text-teal-800'
+    };
+    return colors[category] || 'bg-gray-100 text-gray-800';
+  };
+
+  const completedCount = tasks.filter(task => task.completed).length;
+  const totalCount = tasks.length;
+  const progressPercentage = totalCount > 0 ? Math.round((completedCount / totalCount) * 100) : 0;
+
+  // Group tasks by phase
+  const tasksByPhase = tasks.reduce((acc, task) => {
+    if (!acc[task.phase]) acc[task.phase] = [];
+    acc[task.phase].push(task);
+    return acc;
+  }, {});
+
   return (
-    <div className="implementation-plan">
-      <div className="progress-container">
-        <div className="progress-header">
-          <h2>Implementation Progress</h2>
-          <button className="reset-button" onClick={resetProgress}>Reset Progress</button>
+    <div className="space-y-8">
+      {/* Progress Overview */}
+      <div className="card">
+        <div className="flex items-center justify-between mb-6">
+          <div>
+            <h2 className="text-2xl font-bold text-gray-900">
+              {plrName ? `${plrName} Implementation` : 'PLR Implementation Progress'}
+            </h2>
+            <p className="text-gray-600 mt-1">Track your progress through the implementation phases</p>
+          </div>
+          <div className="text-right">
+            <div className="text-3xl font-bold text-blue-600">{progressPercentage}%</div>
+            <div className="text-sm text-gray-500">Complete</div>
+          </div>
         </div>
-        <div className="progress-bar-container">
+        
+        <div className="progress-bar mb-4">
           <div 
-            className="progress-bar" 
+            className={`progress-bar-fill transition-all duration-500 ${
+              progressPercentage < 30 ? 'low' : 
+              progressPercentage < 70 ? 'medium' : 'high'
+            }`}
             style={{ width: `${progressPercentage}%` }}
           ></div>
         </div>
-        <div className="progress-stats">
-          <span>{completedTasks} of {totalTasks} tasks completed ({progressPercentage}%)</span>
+        
+        <div className="flex justify-between text-sm">
+          <span className="text-gray-600">
+            <strong>{completedCount}</strong> of <strong>{totalCount}</strong> tasks completed
+          </span>
+          <span className="text-gray-600">
+            <strong>{totalCount - completedCount}</strong> remaining
+          </span>
         </div>
       </div>
 
-      <div className="phase">
-        <h2>Phase 1: Foundational Setup - Lead Magnet & List Building</h2>
-        <p className="objective">Objective: Prepare and launch your lead magnet to start building your email list.</p>
-        
-        <div className="section">
-          <h3>1. Lead Magnet Preparation:</h3>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-1-1" 
-                checked={tasks['1.1']} 
-                onChange={() => handleTaskChange('1.1')} 
-              />
-              <label htmlFor="task-1-1">Task 1.1: Brand the Lead Magnet:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Add your name/business name.</li>
-              <li>Incorporate your logo and branding colors/fonts if applicable.</li>
-              <li>Include your website URL and contact information.</li>
-            </ul>
-          </div>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-1-2" 
-                checked={tasks['1.2']} 
-                onChange={() => handleTaskChange('1.2')} 
-              />
-              <label htmlFor="task-1-2">Task 1.2: Integrate Monetization:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Review content for opportunities to add relevant affiliate links.</li>
-              <li>Add links to your own related products or services, if any.</li>
-              <li>Ensure all links are functional.</li>
-            </ul>
-          </div>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-1-3" 
-                checked={tasks['1.3']} 
-                onChange={() => handleTaskChange('1.3')} 
-              />
-              <label htmlFor="task-1-3">Task 1.3: Finalize and Upload:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Convert the edited lead magnet to a PDF document.</li>
-              <li>Upload the PDF to a reliable file hosting service (e.g., Google Drive, Dropbox, your website's media library).</li>
-              <li>Obtain a direct, shareable download link for the PDF.</li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="section">
-          <h3>2. Squeeze Page Creation & Automation:</h3>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-2-1" 
-                checked={tasks['2.1']} 
-                onChange={() => handleTaskChange('2.1')} 
-              />
-              <label htmlFor="task-2-1">Task 2.1: Select and Customize Squeeze Page:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Choose one of the 5 provided squeeze page templates.</li>
-              <li>Copy the template content into your page builder (e.g., WordPress, Leadpages, ClickFunnels).</li>
-              <li>Customize the page with your branding, compelling headlines, and lead magnet visuals.</li>
-            </ul>
-          </div>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-2-2" 
-                checked={tasks['2.2']} 
-                onChange={() => handleTaskChange('2.2')} 
-              />
-              <label htmlFor="task-2-2">Task 2.2: Integrate Opt-in Form:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Embed an opt-in form from your email marketing service (e.g., Mailchimp, ConvertKit, AWeber).</li>
-              <li>Ensure the form is connected to a specific email list for new subscribers.</li>
-            </ul>
-          </div>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-2-3" 
-                checked={tasks['2.3']} 
-                onChange={() => handleTaskChange('2.3')} 
-              />
-              <label htmlFor="task-2-3">Task 2.3: Set Up Automated Lead Magnet Delivery:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Configure an automated welcome email in your email marketing service that includes the download link to the lead magnet.</li>
-              <li>Alternatively, redirect users to a thank-you page with the download link immediately after opt-in.</li>
-            </ul>
-          </div>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-2-4" 
-                checked={tasks['2.4']} 
-                onChange={() => handleTaskChange('2.4')} 
-              />
-              <label htmlFor="task-2-4">Task 2.4: Test Squeeze Page Funnel:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Opt-in through your squeeze page as a test user.</li>
-              <li>Verify you receive the lead magnet and are added to the correct email list.</li>
-              <li>Check for any broken links or errors.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+      {/* Phase Cards */}
+      {[1, 2, 3].map(phase => {
+        const phaseTasks = tasksByPhase[phase] || [];
+        const phaseInfo = getPhaseInfo(phase);
+        const phaseCompleted = phaseTasks.filter(t => t.completed).length;
+        const phaseTotal = phaseTasks.length;
+        const phaseProgress = phaseTotal > 0 ? Math.round((phaseCompleted / phaseTotal) * 100) : 0;
+        const isExpanded = expandedPhase === phase;
 
-      <div className="phase">
-        <h2>Phase 2: Content Deployment & Email Automation</h2>
-        <p className="objective">Objective: Publish your core content and set up automated email promotion.</p>
-        
-        <div className="section">
-          <h3>3. Publishing Content Pieces (e.g., Blog Posts):</h3>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-3-1" 
-                checked={tasks['3.1']} 
-                onChange={() => handleTaskChange('3.1')} 
-              />
-              <label htmlFor="task-3-1">Task 3.1: Prepare and Publish Each of the 25 Content Pieces:</label>
+        return (
+          <div key={phase} className="card">
+            <div 
+              className="cursor-pointer"
+              onClick={() => setExpandedPhase(isExpanded ? null : phase)}
+            >
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center space-x-4">
+                  <div className={`w-12 h-12 rounded-full flex items-center justify-center text-2xl bg-${phaseInfo.color}-100`}>
+                    {phaseInfo.icon}
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-gray-900">
+                      Phase {phase}: {phaseInfo.title}
+                    </h3>
+                    <p className="text-gray-600">{phaseInfo.description}</p>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-4">
+                  <div className="text-right">
+                    <div className="text-lg font-semibold text-gray-900">{phaseProgress}%</div>
+                    <div className="text-sm text-gray-500">{phaseCompleted}/{phaseTotal}</div>
+                  </div>
+                  <svg 
+                    className={`w-5 h-5 text-gray-400 transform transition-transform ${isExpanded ? 'rotate-180' : ''}`}
+                    fill="none" 
+                    stroke="currentColor" 
+                    viewBox="0 0 24 24"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                  </svg>
+                </div>
+              </div>
+              
+              <div className="progress-bar">
+                <div 
+                  className={`progress-bar-fill ${
+                    phaseProgress < 30 ? 'low' : 
+                    phaseProgress < 70 ? 'medium' : 'high'
+                  }`}
+                  style={{ width: `${phaseProgress}%` }}
+                ></div>
+              </div>
             </div>
-            <p className="task-description">For each content piece:</p>
-            <ul className="subtasks">
-              <li>Review and lightly edit for your unique voice and style (optional, but recommended).</li>
-              <li>Add your branding (author name, website).</li>
-              <li>Integrate relevant monetization links (affiliate products, your own offers).</li>
-              <li>Include a Call-to-Action (CTA) within or at the end of the content, encouraging readers to download your lead magnet (link to your squeeze page).</li>
-              <li>Publish the content piece on your blog or chosen platform.</li>
-              <li>Note the live URL of each published piece.</li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="section">
-          <h3>4. Setting Up Promotional Email Autoresponder:</h3>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-4-1" 
-                checked={tasks['4.1']} 
-                onChange={() => handleTaskChange('4.1')} 
-              />
-              <label htmlFor="task-4-1">Task 4.1: Prepare and Load the 25 Promo Emails:</label>
-            </div>
-            <p className="task-description">For each of the 25 promotional emails:</p>
-            <ul className="subtasks">
-              <li>Customize with your branding and a personal touch.</li>
-              <li>Insert the direct link to the corresponding published content piece (from Task 3.1).</li>
-              <li>Ensure a clear CTA to read the content.</li>
-            </ul>
-            <ul className="subtasks">
-              <li>Load all 25 edited emails into your email marketing service's autoresponder sequence for the list that receives the lead magnet.</li>
-              <li>Set the sending schedule (e.g., one email every 2-3 days, or weekly).</li>
-            </ul>
-          </div>
-        </div>
-      </div>
 
-      <div className="phase">
-        <h2>Phase 3: Social Media Promotion & Audience Growth</h2>
-        <p className="objective">Objective: Drive traffic to your squeeze page and content, and build your social media presence.</p>
-        
-        <div className="section">
-          <h3>5. Initial Squeeze Page Promotion (Social Media - 5 Weeks):</h3>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-5-1" 
-                checked={tasks['5.1']} 
-                onChange={() => handleTaskChange('5.1')} 
-              />
-              <label htmlFor="task-5-1">Task 5.1: Plan Squeeze Page Promo Captions:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Review the 10 "Social Media Squeeze Page Promo Captions."</li>
-              <li>Plan to use 2 captions per week for 5 weeks.</li>
-            </ul>
+            {isExpanded && (
+              <div className="mt-6 space-y-4">
+                {phaseTasks.map(task => (
+                  <div
+                    key={task.id}
+                    className={`p-4 border-2 rounded-lg transition-all duration-200 ${
+                      task.completed 
+                        ? 'bg-green-50 border-green-200' 
+                        : 'bg-white border-gray-200 hover:border-gray-300 hover:shadow-sm'
+                    }`}
+                  >
+                    <div className="flex items-start space-x-4">
+                      <div className="flex-shrink-0 mt-1">
+                        <input
+                          type="checkbox"
+                          checked={task.completed}
+                          onChange={() => toggleTask(task.id)}
+                          className="w-5 h-5 text-blue-600 border-2 border-gray-300 rounded focus:ring-blue-500 focus:ring-2"
+                        />
+                      </div>
+                      
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-start justify-between mb-3">
+                          <h4 className={`text-lg font-medium ${
+                            task.completed ? 'text-green-800 line-through' : 'text-gray-900'
+                          }`}>
+                            {task.title}
+                          </h4>
+                          
+                          <div className="flex space-x-2 ml-4">
+                            <span className={`badge text-xs px-2 py-1 rounded-full border ${getPriorityColor(task.priority)}`}>
+                              {task.priority}
+                            </span>
+                            <span className={`badge text-xs px-2 py-1 rounded-full ${getCategoryColor(task.category)}`}>
+                              {task.category}
+                            </span>
+                          </div>
+                        </div>
+                        
+                        <p className={`text-sm mb-3 leading-relaxed ${
+                          task.completed ? 'text-green-700' : 'text-gray-600'
+                        }`}>
+                          {task.description}
+                        </p>
+                        
+                        {task.tips && (
+                          <div className="mb-3 p-3 bg-blue-50 border border-blue-200 rounded-md">
+                            <p className="text-sm text-blue-800">
+                              <strong>💡 Tip:</strong> {task.tips}
+                            </p>
+                          </div>
+                        )}
+                        
+                        <div className="flex justify-between items-center text-sm">
+                          <span className="text-gray-500">
+                            ⏱️ Estimated time: <strong>{task.estimatedTime}</strong>
+                          </span>
+                          {task.completed && (
+                            <span className="text-green-600 font-medium flex items-center">
+                              <svg className="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                              Completed
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-5-2" 
-                checked={tasks['5.2']} 
-                onChange={() => handleTaskChange('5.2')} 
-              />
-              <label htmlFor="task-5-2">Task 5.2: Create Visuals:</label>
-            </div>
-            <ul className="subtasks">
-              <li>For each chosen caption, create a relevant image or short video (AI tools or Canva can assist).</li>
-            </ul>
-          </div>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-5-3" 
-                checked={tasks['5.3']} 
-                onChange={() => handleTaskChange('5.3')} 
-              />
-              <label htmlFor="task-5-3">Task 5.3: Schedule/Post:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Post/schedule these 2 captions + visuals per week on your primary social media platforms.</li>
-              <li>Crucially, ensure these posts link directly to your squeeze page.</li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="section">
-          <h3>6. Follower Building Campaign (Social Media - Ongoing):</h3>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-6-1" 
-                checked={tasks['6.1']} 
-                onChange={() => handleTaskChange('6.1')} 
-              />
-              <label htmlFor="task-6-1">Task 6.1: Prepare Follower Building Content:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Pair each of the 20 "Follower Building Social Media Captions" with its corresponding "Follower Building Social Media Image."</li>
-            </ul>
-          </div>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-6-2" 
-                checked={tasks['6.2']} 
-                onChange={() => handleTaskChange('6.2')} 
-              />
-              <label htmlFor="task-6-2">Task 6.2: Schedule/Post Regularly:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Post/schedule this content consistently across your chosen social media networks (e.g., 1-2 per week, or intersperse with other content).</li>
-              <li>Use platform-specific CTAs as suggested in the PLR.</li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="section">
-          <h3>7. Extended Content Promotion (Social Media - 25 Weeks):</h3>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-7-1" 
-                checked={tasks['7.1']} 
-                onChange={() => handleTaskChange('7.1')} 
-              />
-              <label htmlFor="task-7-1">Task 7.1: Plan Long-Term Content Promotion:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Utilize the 125 "Social Media Traffic Captions" (5 captions per content piece).</li>
-            </ul>
-          </div>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-7-2" 
-                checked={tasks['7.2']} 
-                onChange={() => handleTaskChange('7.2')} 
-              />
-              <label htmlFor="task-7-2">Task 7.2: Weekly Promotion Cycle (Repeat for 25 weeks):</label>
-            </div>
-            <p className="task-description">For each week (focusing on one content piece per week):</p>
-            <ul className="subtasks">
-              <li>Select the 5 captions for that week's dedicated content piece.</li>
-              <li>Create/source 5 accompanying social media images/visuals.</li>
-              <li>Schedule/post one caption + image daily (e.g., Monday-Friday), linking directly to that specific content piece on your blog.</li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="section">
-          <h3>8. Leveraging Content Descriptions:</h3>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-8-1" 
-                checked={tasks['8.1']} 
-                onChange={() => handleTaskChange('8.1')} 
-              />
-              <label htmlFor="task-8-1">Task 8.1: Enhance Blog Posts:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Use the corresponding "Content Description" as the intro/excerpt for each of your 25 blog posts.</li>
-            </ul>
-          </div>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-8-2" 
-                checked={tasks['8.2']} 
-                onChange={() => handleTaskChange('8.2')} 
-              />
-              <label htmlFor="task-8-2">Task 8.2: Social Media Snippets:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Post the "Content Descriptions" on platforms like Facebook, LinkedIn, or as Instagram/Facebook story text, linking to the full content piece.</li>
-            </ul>
-          </div>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-8-3" 
-                checked={tasks['8.3']} 
-                onChange={() => handleTaskChange('8.3')} 
-              />
-              <label htmlFor="task-8-3">Task 8.3: Multimedia Descriptions:</label>
-            </div>
-            <ul className="subtasks">
-              <li>If creating related YouTube videos or podcast episodes, use the descriptions as part of your video/podcast notes.</li>
-            </ul>
-          </div>
-        </div>
-        
-        <div className="section">
-          <h3>9. Short-Form Video Content Strategy (Ongoing):</h3>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-9-1" 
-                checked={tasks['9.1']} 
-                onChange={() => handleTaskChange('9.1')} 
-              />
-              <label htmlFor="task-9-1">Task 9.1: Plan Video Content:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Review the 25 "Short Form Video Scripts And Ideas."</li>
-              <li>Select a script and one of its 5 video concepts to start.</li>
-            </ul>
-          </div>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-9-2" 
-                checked={tasks['9.2']} 
-                onChange={() => handleTaskChange('9.2')} 
-              />
-              <label htmlFor="task-9-2">Task 9.2: Create and Post Videos:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Record/create your short video (face-to-camera, voiceover, text-based, etc.).</li>
-              <li>Include a clear Hook, Body, and CTA (as per the script).</li>
-              <li>Post to platforms like Instagram Reels, TikTok, YouTube Shorts.</li>
-              <li>Use video CTAs to promote your blog content, lead magnet, or products.</li>
-            </ul>
-          </div>
-          
-          <div className="task">
-            <div className="task-header">
-              <input 
-                type="checkbox" 
-                id="task-9-3" 
-                checked={tasks['9.3']} 
-                onChange={() => handleTaskChange('9.3')} 
-              />
-              <label htmlFor="task-9-3">Task 9.3: Establish a Schedule:</label>
-            </div>
-            <ul className="subtasks">
-              <li>Aim to produce and post 1-3 short videos per week.</li>
-            </ul>
-          </div>
-        </div>
-      </div>
+        );
+      })}
     </div>
-  )
-}
+  );
+};
 
-export default TaskList
+export default TaskList;
