@@ -1,61 +1,89 @@
-import { Link } from 'react-router-dom'
-import { FiBell, FiSettings, FiMenu } from 'react-icons/fi'
-import useTaskStore from '../store/taskStore'
+import { useState } from 'react'
+import { Link, useLocation } from 'react-router-dom'
 
-const Header = ({ openSidebar }) => {
-  const tasks = useTaskStore(state => state.tasks)
-  
-  const pendingTasks = tasks.filter(task => task.status !== 'completed').length
-  
+const Header = ({ plrName, setPlrName }) => {
+  const [isEditing, setIsEditing] = useState(false)
+  const [tempName, setTempName] = useState(plrName)
+  const location = useLocation()
+
+  const handleSave = () => {
+    setPlrName(tempName)
+    setIsEditing(false)
+  }
+
+  const handleCancel = () => {
+    setTempName(plrName)
+    setIsEditing(false)
+  }
+
   return (
-    <header className="bg-white border-b border-gray-200 z-30">
-      <div className="px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
-          {/* Left side */}
-          <div className="flex items-center">
-            <button 
-              className="lg:hidden mr-2 text-gray-500 focus:outline-none"
-              aria-label="Open sidebar"
-              onClick={openSidebar}
-            >
-              <FiMenu className="h-6 w-6" />
-            </button>
-            <h1 className="text-xl font-bold text-gray-800">PLR Implementation Tracker</h1>
+    <header className="bg-white shadow-sm border-b border-gray-200">
+      <div className="max-w-4xl mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-4">
+            <h1 className="text-2xl font-bold text-gray-900">
+              PLR Implementation
+            </h1>
+            
+            <nav className="flex space-x-4">
+              <Link 
+                to="/" 
+                className={`px-3 py-2 rounded-md text-sm font-medium ${
+                  location.pathname === '/' 
+                    ? 'bg-blue-100 text-blue-700' 
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Steps
+              </Link>
+              <Link 
+                to="/dashboard" 
+                className={`px-3 py-2 rounded-md text-sm font-medium ${
+                  location.pathname === '/dashboard' 
+                    ? 'bg-blue-100 text-blue-700' 
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Dashboard
+              </Link>
+            </nav>
           </div>
           
-          {/* Right side */}
-          <div className="flex items-center space-x-4">
-            {/* Notification bell */}
-            <div className="relative">
-              <button className="p-1 text-gray-500 rounded-full hover:bg-gray-100 focus:outline-none">
-                <FiBell className="h-6 w-6" />
-                {pendingTasks > 0 && (
-                  <span className="absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white transform translate-x-1/2 -translate-y-1/2 bg-danger-500 rounded-full">
-                    {pendingTasks}
-                  </span>
-                )}
-              </button>
-            </div>
-            
-            {/* Settings */}
-            <Link 
-              to="/settings"
-              className="p-1 text-gray-500 rounded-full hover:bg-gray-100 focus:outline-none"
-            >
-              <FiSettings className="h-6 w-6" />
-            </Link>
-            
-            {/* User profile */}
-            <div className="relative">
-              <button className="flex items-center focus:outline-none">
-                <div className="h-8 w-8 rounded-full bg-primary-500 flex items-center justify-center text-white font-medium">
-                  PL
-                </div>
-                <span className="ml-2 text-sm font-medium text-gray-700 hidden md:block">
-                  PLR User
+          <div className="flex items-center space-x-3">
+            {isEditing ? (
+              <div className="flex items-center space-x-2">
+                <input
+                  type="text"
+                  value={tempName}
+                  onChange={(e) => setTempName(e.target.value)}
+                  placeholder="Enter PLR name..."
+                  className="px-3 py-1 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  autoFocus
+                />
+                <button
+                  onClick={handleSave}
+                  className="px-3 py-1 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={handleCancel}
+                  className="px-3 py-1 bg-gray-300 text-gray-700 text-sm rounded-md hover:bg-gray-400"
+                >
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-2">
+                <span className="text-sm text-gray-600">PLR Name:</span>
+                <span 
+                  className="font-medium text-gray-900 cursor-pointer hover:text-blue-600"
+                  onClick={() => setIsEditing(true)}
+                >
+                  {plrName || 'Click to set PLR name'}
                 </span>
-              </button>
-            </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

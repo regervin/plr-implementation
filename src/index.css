@@ -4,50 +4,13 @@
 
 /* Custom styles */
 .card {
-  @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
+  @apply bg-white rounded-lg p-6 shadow-sm border border-gray-200;
 }
 
 .progress-bar {
-  @apply w-full bg-gray-200 rounded-full h-3;
+  @apply w-full h-2 bg-gray-200 rounded-full overflow-hidden;
 }
 
-.progress-bar-fill {
-  @apply h-3 rounded-full transition-all duration-500;
-}
-
-.progress-bar-fill.low {
-  @apply bg-red-500;
-}
-
-.progress-bar-fill.medium {
-  @apply bg-yellow-500;
-}
-
-.progress-bar-fill.high {
-  @apply bg-green-500;
-}
-
-.badge {
-  @apply inline-flex items-center font-medium;
-}
-
-/* Task animations */
-.task-card {
-  @apply transition-all duration-200;
-}
-
-.task-card:hover {
-  @apply transform translate-y-[-1px] shadow-md;
-}
-
-/* Custom checkbox styling */
-input[type="checkbox"]:checked {
-  @apply bg-blue-600 border-blue-600;
-}
-
-/* Responsive utilities */
-@media (max-width: 768px) {
-  .card {
-    @apply p-4;
-  }
+.progress-fill {
+  @apply h-full bg-gradient-to-r from-blue-500 to-blue-600 rounded-full transition-all duration-300;
 }
